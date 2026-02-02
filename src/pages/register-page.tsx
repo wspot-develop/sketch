@@ -1,20 +1,24 @@
 import { register } from '../api';
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const LoginPage: React.FC = () => {
+const RegisterPage: React.FC = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     await register(email, password, name);
+    navigate('/car');
   };
 
   return (
     <div className="p-4 w-[375px] h-[667px] bg-[#EEE] rounded-[30px] border-2 border-[#222] shadow-[0_0_40px_rgba(255,255,255,0.1)] overflow-hidden relative">
       <div >
         <div className='pt-12 pb-6'>
+          <a href="/" >Back</a>
           <h2 className='pb-4'>Register</h2>
           <p>Please enter your details to create an account</p>
         </div>
@@ -71,4 +75,4 @@ const LoginPage: React.FC = () => {
   );
 };
 
-export default LoginPage;
+export default RegisterPage;

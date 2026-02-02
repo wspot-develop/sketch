@@ -11,7 +11,6 @@ const LoginPage: React.FC = () => {
     e.preventDefault();
     try {
       await login(email, password);
-      // Redirect to car page or dashboard route react way
       navigate('/car');
     } catch (error) {
       console.error('Login failed:', error);
