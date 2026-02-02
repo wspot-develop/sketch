@@ -33,9 +33,10 @@ const CarCreatePage = () => {
               onChange={(ev) => { setCar({...car, brand: ev.target.value}) }}
             />
           </div>
-          <div>
+          <div className='flex justify-between items-center'>
+            <a href="/car">Back</a>            
             <button type="submit" >
-              Crete car
+              Add car
             </button>
           </div>
         </form>

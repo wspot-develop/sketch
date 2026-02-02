@@ -5,14 +5,17 @@ import { useNavigate } from 'react-router-dom';
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [message, setMessage] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
+    setMessage('');
     e.preventDefault();
     try {
       await login(email, password);
       navigate('/car');
     } catch (error) {
+      setMessage(`Login failed. Please check your credentials and try again. ${new Date().toLocaleTimeString()}`);
       console.error('Login failed:', error);
     }
   };
@@ -52,9 +55,10 @@ const LoginPage: React.FC = () => {
             <button type="submit" >
               Sign In
             </button>
+            {message && <p className='pt-3 text-red-700'>{message}</p>}
           </div>
         </form>
-        <div className="pt-12">
+        <div className="pt-3">
           <p>Don't have an account? <a href="/register">Create account</a></p>
         </div>
       </div >
