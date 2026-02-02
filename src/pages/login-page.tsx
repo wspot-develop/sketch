@@ -13,7 +13,7 @@ const LoginPage: React.FC = () => {
     e.preventDefault();
     try {
       await login(email, password);
-      navigate('/car');
+      navigate('/cars');
     } catch (error) {
       setMessage(`Login failed. Please check your credentials and try again. ${new Date().toLocaleTimeString()}`);
       console.error('Login failed:', error);
@@ -62,10 +62,6 @@ const LoginPage: React.FC = () => {
           <p>Don't have an account? <a href="/register">Create account</a></p>
         </div>
       </div >
-      <div className="login-illustration">
-        {/* Placeholder for a premium illustration or background effect */}
-        <div className="glow-effect"></div>
-      </div>
     </div >
   );
 };

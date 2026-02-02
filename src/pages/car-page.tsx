@@ -25,7 +25,7 @@ const CarPage: React.FC = () => {
             </div>
             <ul className='pl-6 pt-2'>
               {cars.map((car, index) => (
-                <li className='pl-4' key={index}>{car.name}</li>
+                <li className='pl-4 pb-2' key={index}><a href={`/parking-options/${car.id}`}>{car.name}</a></li>
               ))}
             </ul>
           </div>

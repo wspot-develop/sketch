@@ -11,7 +11,7 @@ const RegisterPage: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     await register(email, password, name);
-    navigate('/car');
+    navigate('/cars');
   };
 
   return (
