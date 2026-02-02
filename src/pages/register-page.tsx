@@ -2,12 +2,13 @@ import { register } from '../api';
 import React, { useState } from 'react';
 
 const LoginPage: React.FC = () => {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await register(email, password);
+    await register(email, password, name);
   };
 
   return (
@@ -18,6 +19,17 @@ const LoginPage: React.FC = () => {
           <p>Please enter your details to create an account</p>
         </div>
         <form onSubmit={handleSubmit} className='flex flex-col gap-6'>
+          <div>
+            <label htmlFor="email">Name</label>
+            <input
+              type="text"
+              id="name"
+              placeholder="Name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+          </div>
           <div>
             <label htmlFor="email">Email Address</label>
             <input
