@@ -2,7 +2,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Car, CircleParking } from 'lucide-react';
 
 
-const OptionsPage = () => {
+const ParkingOptionsPage = () => {
   const { car_id } = useParams();
   const navigate = useNavigate();
 
@@ -37,4 +37,4 @@ const OptionsPage = () => {
   );
 };
 
-export default OptionsPage;
+export default ParkingOptionsPage;

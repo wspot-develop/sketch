@@ -3,7 +3,7 @@ import LoginPage from './pages/login-page';
 import RegisterPage from './pages/register-page';
 import CarPage from './pages/car-page';
 import CarCreatePage from './pages/car-create-page';
-import ParkingOptonsPage from './pages/parking-options-page';
+import ParkingOptionsPage from './pages/parking-options-page';
 import CarStartParkingPage from './pages/parking-start-page';
 import WaitingPlacePage from './pages/waiting-place';
 import ParkingSpotsPage from './pages/parking-spots-page';
@@ -23,7 +23,7 @@ function App() {
         <Route path="/parking-create-spot/:car_id" element={<ParkingCreateSpotPage />} />
         <Route path="/parking-success" element={<ParkingSuccessPage />} />
         <Route path="/parking-match/:car_id" element={<ParkingMatchPage />} />
-        <Route path="/parking-options/:car_id" element={<ParkingOptonsPage />} />
+        <Route path="/parking-options/:car_id" element={<ParkingOptionsPage />} />
         <Route path="/waiting-place/:car_id" element={<WaitingPlacePage />} />
         <Route path="/car-start-parking/:car_id" element={<CarStartParkingPage />} />
         <Route path="/parking-spots/:car_id" element={<ParkingSpotsPage />} />
