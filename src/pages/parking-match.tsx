@@ -24,6 +24,7 @@ const ParkingMatchPage = () => {
           <div className="flex flex-col justify-center items-center p-2 ">
             <p>Arriving in 5 minutes</p>
           </div>
+          <img className='object-none' style={{height: '220px', width: '100%'}} src="/map.png"></img>
 
           <div className='flex gap-2 justify-between'>
             <button onClick={() => window.location.href = `/op1`} className='border-2 rounded-lg shadow-2xl no-underline'>

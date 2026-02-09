@@ -11,11 +11,15 @@ import ParkingMatchPage from './pages/parking-match';
 import ParkingSuccessPage from './pages/parking-success';
 import ParkingCreateSpotPage from './pages/parking-create-spot';
 import CarNotificationPage from './pages/car-page-notification';
+import ParkingWaitingMatchPage from './pages/parking-waiting-match';
+import Page from './pages/page';
+
 
 function App() {
   return (
     <Router>
       <Routes>
+        <Route path="/parking-waiting-match/:car_id" element={<ParkingWaitingMatchPage />} />
         <Route path="/parking-create-spot/:car_id" element={<ParkingCreateSpotPage />} />
         <Route path="/parking-success" element={<ParkingSuccessPage />} />
         <Route path="/parking-match/:car_id" element={<ParkingMatchPage />} />
@@ -28,6 +32,7 @@ function App() {
         <Route path="/cars/:car_id" element={<CarNotificationPage />} />
         <Route path="/car-create" element={<CarCreatePage />} />
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="/page" element={<Page />} />
         <Route path="/" element={<Navigate to="/login" replace />} />
       </Routes>
     </Router>

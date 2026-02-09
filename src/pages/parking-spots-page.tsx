@@ -12,19 +12,19 @@ const CarParkingSpotsPage = () => {
 
         <div className='flex flex-col gap-6'>
 
-          <button onClick={() => window.location.href = `/parking-match/${car_id}?place=home`} className='border-2 rounded-lg shadow-2xl no-underline'>
+          <button onClick={() => window.location.href = `/parking-waiting-match/${car_id}?place=home`} className='border-2 rounded-lg shadow-2xl no-underline'>
             <div className="flex flex-col justify-center items-center p-2 ">
               <p>Calle Salvador Dali, 34</p>
             </div>
           </button>
 
-          <button onClick={() => window.location.href = `/parking-match/${car_id}?place=work`} className='border-2 rounded-lg shadow-2xl no-underline'>
+          <button onClick={() => window.location.href = `/parking-waiting-match/${car_id}?place=work`} className='border-2 rounded-lg shadow-2xl no-underline'>
             <div className="flex flex-col justify-center items-center p-2 ">
               <p>Calle Americo Vespucio 123</p>
             </div>
           </button>
 
-          <button onClick={() => window.location.href = `/parking-match/${car_id}`} className=' border-2 rounded-lg shadow-2xl no-underline'>
+          <button onClick={() => window.location.href = `/parking-waiting-match/${car_id}`} className=' border-2 rounded-lg shadow-2xl no-underline'>
             <div className="flex flex-col p-2 justify-center items-center ">
               <p>Av San Vicente, 355</p>
             </div>
