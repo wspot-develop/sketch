@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { getCars } from '../api';
 
-const CarPage: React.FC = () => {
+const CarNotificationPage: React.FC = () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [cars, setCars] = useState<any[]>([]);
 
@@ -17,6 +17,14 @@ const CarPage: React.FC = () => {
       <div >
         <div className='pt-12 pb-3'>
           <h2 className='pb-1'>Wanna spot</h2>
+        </div>
+        <div className='py-3 '>
+          <p className='pb-3'><strong>Notification:</strong></p>
+          <p>Corola 2020 - Waiting to do match.</p>
+          <div className='flex justify-between pt-3'>
+            <a href="/parking-match">Accept</a>
+            <a href="/car-page">Decline</a>
+          </div>
         </div>
         {cars.length > 0 ? (
           <div className='py-3 border-t-2'>
@@ -40,4 +48,4 @@ const CarPage: React.FC = () => {
   );
 };
 
-export default CarPage;
+export default CarNotificationPage;
