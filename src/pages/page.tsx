@@ -97,9 +97,7 @@ const Page: React.FC = () => {
 
   return (
     <div className="p-4 w-[375px] h-[667px] bg-[#EEE] rounded-[30px] border-2 border-[#222] shadow-[0_0_40px_rgba(255,255,255,0.1)] overflow-y-auto relative">
-      <div className="pt-8">
-        {segments}
-      </div>
+      {segments}
     </div>
   );
 };

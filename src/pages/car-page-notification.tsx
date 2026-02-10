@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { getCars } from '../api';
+import { useParams } from 'react-router-dom';
 
 const CarNotificationPage: React.FC = () => {
+  const { car_id } = useParams();
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [cars, setCars] = useState<any[]>([]);
 
@@ -22,8 +25,8 @@ const CarNotificationPage: React.FC = () => {
           <p className='pb-3'><strong>Notification:</strong></p>
           <p>Corola 2020 - Waiting to do match.</p>
           <div className='flex justify-between pt-3'>
-            <a href="/parking-match">Accept</a>
-            <a href="/car-page">Decline</a>
+            <a href={`/parked-waiting/${car_id}`}>Accept</a>
+            <a href="/cars">Decline</a>
           </div>
         </div>
         {cars.length > 0 ? (

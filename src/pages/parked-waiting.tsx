@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const ParkingMatchPage = () => {
+const ParkedWaitingPage = () => {
   const [showClose, setShowClose] = useState(false)
   const isClose = (value: boolean) => {
     setShowClose(value)
@@ -9,7 +9,7 @@ const ParkingMatchPage = () => {
   return (
     <div className="p-4 w-[375px] h-[667px] bg-[#EEE] rounded-[30px] border-2 border-[#222] shadow-[0_0_40px_rgba(255,255,255,0.1)] overflow-hidden relative">
       <div className='pb-6'>
-        <h4 className='pb-4'>Going to destiny</h4>
+        <h4 className='pb-4'>Coming to destiny</h4>
       </div>
 
       <div className='flex flex-col gap-6'>
@@ -17,17 +17,17 @@ const ParkingMatchPage = () => {
           <img className='object-none' style={{height: '220px', width: '100%'}} src="/map.png"></img>
           
           {!showClose &&
-            <p>Arriving in 5 minutes</p>
+            <p>Coming in 5 minutes</p>
           }
           {showClose &&
             <div>
-              <p className="text-green-800 blink">The blue Porche with place ES-32232 is front of you. Waiting accept transaction...</p>
+              <p className="text-green-800 blink">The white Colora with place ES-445533 is front of you. Waiting accept transaction...</p>
             </div>
           }
           {!showClose &&
             <button className='bg-black! text-white! border-2 rounded-lg shadow-2xl no-underline'>
               <div className="flex flex-col justify-center items-center ">
-                <p>I am coming, please wait.</p>
+                <p>Cancel operation</p>
               </div>
             </button>
           }
@@ -57,4 +57,4 @@ const ParkingMatchPage = () => {
   );
 };
 
-export default ParkingMatchPage;
+export default ParkedWaitingPage;
