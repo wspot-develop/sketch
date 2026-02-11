@@ -8,6 +8,8 @@ const LoginPage: React.FC = () => {
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
 
+  const isPasswordValid = password.length >= 6;
+
   const handleSubmit = async (e: React.FormEvent) => {
     setMessage('');
     e.preventDefault();
@@ -48,11 +50,15 @@ const LoginPage: React.FC = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              minLength={6}
             />
+            {password.length > 0 && !isPasswordValid && (
+              <p className="text-red-500 text-sm mt-1">Password must be at least 6 characters</p>
+            )}
           </div>
           <div>
 
-            <button type="submit" >
+            <button type="submit" disabled={!isPasswordValid}>
               Sign In
             </button>
             {message && <p className='pt-3 text-red-700'>{message}</p>}

@@ -40,6 +40,7 @@ const CarCreatePage = () => {
             <label htmlFor="brand">Car Brand</label>
             <input
               type="text"
+              required
               id="brand"
               placeholder="Car Brand"
               value={car.brand}
@@ -48,18 +49,24 @@ const CarCreatePage = () => {
           </div>
           <div className='flex flex-col'>
             <label htmlFor="size">Car Size</label>
-            <input
-              type="text"
+            <select
               id="size"
-              placeholder="Car Size"
+              required
               value={car.size}
               onChange={(ev) => { setCar({ ...car, size: ev.target.value }) }}
-            />
+            >
+              <option value="">Select Size</option>
+              <option value="SM">Small</option>
+              <option value="M">Medium</option>
+              <option value="L">Large</option>
+              <option value="XL">Extra Large</option>
+            </select>
           </div>
           <div className='flex flex-col'>
             <label htmlFor="model">Car Model</label>
             <input
               type="text"
+              required
               id="model"
               placeholder="Car Model"
               value={car.model}
@@ -71,6 +78,7 @@ const CarCreatePage = () => {
             <input
               type="text"
               id="color"
+              required
               placeholder="Car Color"
               value={car.color}
               onChange={(ev) => { setCar({ ...car, color: ev.target.value }) }}
@@ -81,6 +89,7 @@ const CarCreatePage = () => {
             <input
               type="text"
               id="plate"
+              required
               placeholder="Car Plate"
               value={car.plate}
               onChange={(ev) => { setCar({ ...car, plate: ev.target.value }) }}

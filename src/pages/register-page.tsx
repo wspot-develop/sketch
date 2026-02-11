@@ -8,6 +8,8 @@ const RegisterPage: React.FC = () => {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
+  const isPasswordValid = password.length >= 6;
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     await register(email, password, name);
@@ -54,11 +56,15 @@ const RegisterPage: React.FC = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              minLength={6}
             />
+            {password.length > 0 && !isPasswordValid && (
+              <p className="text-red-500 text-sm mt-1">Password must be at least 6 characters</p>
+            )}
           </div>
           <div>
 
-            <button type="submit" >
+            <button type="submit" disabled={!isPasswordValid}>
               Sign Up
             </button>
           </div>
