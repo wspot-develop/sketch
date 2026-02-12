@@ -1,12 +1,25 @@
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { createBooking } from '../api';
 
 const ParkingCreateSpotPage = () => {
   const navigate = useNavigate();
   const { car_id } = useParams();
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const bookingData = {
+      car_id,
+      address: formData.get('address'),
+      available_from: new Date(formData.get('available_from') as string).toISOString(),
+      details: {
+        title: formData.get('details[title]'),
+        vehicle_id: car_id,
+        zone_type: formData.get('details[zone_type]'),
+      },
+    };
+    await createBooking(bookingData);
     navigate(`/cars/${car_id}`);
   };
 
@@ -20,35 +33,31 @@ const ParkingCreateSpotPage = () => {
 
         <form onSubmit={handleSubmit} className='flex flex-col gap-2'>
           <div className='flex flex-col '>
-            <label htmlFor="brand">Size car</label>
-            <select>
-              <option value="S">Small</option>
-              <option value="M">Medium</option>
-              <option value="L">Large</option>
-            </select>
+            <label htmlFor="title">Title</label>
+            <input name="title" placeholder='home'></input>
+            <label htmlFor="address">Address</label>
+            <input name="address"></input>
+            <div className='flex gap-3 pt-3'>
+              <div>
+                <label htmlFor="details[zone_type]">Color Zone</label>
+                <select name="details[zone_type]">
+                  <option value="green">Green</option>
+                  <option value="red">Red</option>
+                  <option value="blue">Blue</option>
+                  <option value="yellow">Yellow</option>
+                </select>
+              </div>
+            </div>
           </div>
-          <div className='flex flex-col'>
-            <label htmlFor="size">Color Zone</label>
-            <select>
-              <option value="red">Red</option>
-              <option value="blue">Blue</option>
-              <option value="green">Green</option>
-              <option value="yellow">Yellow</option>
-            </select>
-          </div>
-          <div className='flex flex-col'>
-            <label htmlFor="date">Date</label>
-            <input
-              type="date"
-              id="date"
-            />
-          </div>
-          <div className='flex flex-col'>
-            <label htmlFor="time">Time</label>
-            <input
-              type="time"
-              id="time"
-            />
+          <div className='flex gap-3'>
+            <div className='flex flex-col'>
+              <label htmlFor="available_from">Date</label>
+              <input
+                name="available_from"
+                type="datetime-local"
+                id="date"
+              />
+            </div>
           </div>
           <div className='flex justify-between items-center'>
             <button type="submit" >

@@ -24,7 +24,7 @@ const CarStartParkingPage = () => {
             </div>
           </button>
 
-          <button onClick={() => window.location.href = `/page?content=create-spot`} className=' border-2 rounded-lg shadow-2xl no-underline'>
+          <button onClick={() => window.location.href = `/create-spot`} className=' border-2 rounded-lg shadow-2xl no-underline'>
             <div className="flex flex-col p-2 justify-center items-center ">
               <p>Other</p>
             </div>

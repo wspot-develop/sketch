@@ -14,12 +14,14 @@ import CarNotificationPage from './pages/car-page-notification';
 import ParkingWaitingMatchPage from './pages/parking-waiting-match';
 import Page from './pages/page';
 import ParkedWaitingPage from './pages/parked-waiting';
+import CreateSpotPage from './pages/create-spot-page';
 
 
 function App() {
   return (
     <Router>
       <Routes>
+        <Route path="/create-spot" element={<CreateSpotPage />} />
         <Route path="/parked-waiting/:car_id" element={<ParkedWaitingPage />} />
         <Route path="/parking-waiting-match/:car_id" element={<ParkingWaitingMatchPage />} />
         <Route path="/parking-create-spot/:car_id" element={<ParkingCreateSpotPage />} />

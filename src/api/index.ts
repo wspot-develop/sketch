@@ -56,9 +56,35 @@ export const getCar = async (car_id: string) => {
   const token = localStorage.getItem('token');
   const response = await fetch(`${API_URL}/users/${user_id}/cars/${car_id}`, {
     method: 'GET',
-    headers: {      
+    headers: {
       'Authorization': `Bearer ${token}`,
     },
+  });
+  return response.json();
+}
+
+export const createBooking = async (bookingData: unknown) => {
+  const token = localStorage.getItem('token');
+  const response = await fetch(`${API_URL}/bookings`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(bookingData),
+  });
+  return response.json();
+}
+
+export const getBookings = async (bookingData: unknown) => {
+  const token = localStorage.getItem('token');
+  const response = await fetch(`${API_URL}/bookings`, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(bookingData),
   });
   return response.json();
 }
