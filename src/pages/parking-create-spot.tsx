@@ -14,7 +14,6 @@ const ParkingCreateSpotPage = () => {
       address: formData.get('address'),
       available_from: new Date(formData.get('available_from') as string).toISOString(),
       details: {
-        title: formData.get('details[title]'),
         vehicle_id: car_id,
         zone_type: formData.get('details[zone_type]'),
       },
@@ -33,8 +32,6 @@ const ParkingCreateSpotPage = () => {
 
         <form onSubmit={handleSubmit} className='flex flex-col gap-2'>
           <div className='flex flex-col '>
-            <label htmlFor="title">Title</label>
-            <input name="title" placeholder='home'></input>
             <label htmlFor="address">Address</label>
             <input name="address"></input>
             <div className='flex gap-3 pt-3'>

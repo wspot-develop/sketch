@@ -20,7 +20,7 @@ type Booking = {
   user_notes: string;
 };
 
-const CreateSpotPage = () => {
+const SearchSpotPage = () => {
   const navigate = useNavigate();
   const [booking, setBooking] = useState<Booking>({
     address: '',
@@ -40,7 +40,6 @@ const CreateSpotPage = () => {
   const [search, setSearch] = useState('');
   const [distance, setDistance] = useState('500m');
   const [date, setDate] = useState('');
-  const [time, setTime] = useState('');
   const [type, setType] = useState('private');
   const [mapCenter, setMapCenter] = useState<google.maps.LatLngLiteral>({ lat: 40.4168, lng: -3.7038 });
   const [markerPos, setMarkerPos] = useState<google.maps.LatLngLiteral | null>(null);
@@ -77,11 +76,10 @@ const CreateSpotPage = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const available_from = date && time ? `${date}T${time}` : '';
     const payload: Booking = {
       ...booking,
       address: search,
-      available_from,
+      available_from: date,
       details: {
         ...booking.details,
         zone_type: type,
@@ -95,32 +93,46 @@ const CreateSpotPage = () => {
   return (
     <div className="p-4 w-[375px] h-[667px] bg-[#EEE] rounded-[30px] border-2 border-[#222] shadow-[0_0_40px_rgba(255,255,255,0.1)] overflow-hidden relative">
       <div className="h-full overflow-y-auto">
-        <div className='pb-6'>
-          <h2 className='pb-4'>Create Spot</h2>
-          <p>Book a new parking spot</p>
-        </div>
+        <h2 className='pb-4'>Seach Spot</h2>
 
         <form onSubmit={handleSubmit} className='flex flex-col gap-2'>
           <div className='flex flex-col'>
-            <label htmlFor="search">Search</label>
-            {isLoaded ? (
-              <Autocomplete onLoad={onAutocompleteLoad} onPlaceChanged={onPlaceChanged}>
-                <input
-                  type="text"
-                  id="search"
-                  placeholder="Search address..."
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                />
-              </Autocomplete>
-            ) : (
-              <input
-                type="text"
-                id="search"
-                placeholder="Loading maps..."
-                disabled
-              />
-            )}
+            <div className='flex gap-3'>
+              <div>
+                <label htmlFor="search">Search</label>
+                {isLoaded ? (
+                  <Autocomplete onLoad={onAutocompleteLoad} onPlaceChanged={onPlaceChanged}>
+                    <input
+                      type="text"
+                      id="search"
+                      placeholder="Search address..."
+                      value={search}
+                      onChange={(e) => setSearch(e.target.value)}
+                    />
+                  </Autocomplete>
+                ) : (
+                  <input
+                    type="text"
+                    id="search"
+                    placeholder="Loading maps..."
+                    disabled
+                  />
+                )}                
+              </div>
+              <div>
+                <label htmlFor="distance">Distance</label>
+                <select
+                  id="distance"
+                  value={distance}
+                  onChange={(e) => setDistance(e.target.value)}
+                >
+                  <option value="500m">500m</option>
+                  <option value="1km">1km</option>
+                  <option value="3km">3km</option>
+                </select>
+              </div> 
+            </div>
+
           </div>
 
           {isLoaded && (
@@ -136,45 +148,37 @@ const CreateSpotPage = () => {
           )}
 
           <div className='flex flex-col'>
-            <label htmlFor="distance">Distance</label>
-            <select
-              id="distance"
-              value={distance}
-              onChange={(e) => setDistance(e.target.value)}
-            >
-              <option value="500m">500m</option>
-              <option value="1km">1km</option>
-              <option value="3km">3km</option>
-            </select>
+            <div className='flex gap-3'>     
+              <div>
+                <label htmlFor="type">Type</label>
+                <select
+                  id="type"
+                  value={type}
+                  onChange={(e) => setType(e.target.value)}
+                >
+                  <option value="private">Private</option>
+                  <option value="public">Public</option>
+                </select>
+              </div>
+              <div>
+                <label htmlFor="date">Date</label>
+                <input
+                  type="datetime-local"
+                  id="date"
+                  value={date}
+                  onChange={(e) => setDate(e.target.value)}
+                />
+              </div>
+            </div>
+              <div>
+                <label htmlFor="date">Save like favorite</label>
+                <input
+                  type="type"
+                  name="favorite"
+                />
+              </div>
           </div>
           <div className='flex flex-col'>
-            <label htmlFor="date">Date</label>
-            <input
-              type="date"
-              id="date"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
-            />
-          </div>
-          <div className='flex flex-col'>
-            <label htmlFor="time">Time</label>
-            <input
-              type="time"
-              id="time"
-              value={time}
-              onChange={(e) => setTime(e.target.value)}
-            />
-          </div>
-          <div className='flex flex-col'>
-            <label htmlFor="type">Type</label>
-            <select
-              id="type"
-              value={type}
-              onChange={(e) => setType(e.target.value)}
-            >
-              <option value="private">Private</option>
-              <option value="public">Public</option>
-            </select>
           </div>
           <div className='flex justify-between items-center'>
             <button type="submit">
@@ -190,4 +194,4 @@ const CreateSpotPage = () => {
   );
 };
 
-export default CreateSpotPage;
+export default SearchSpotPage;
