@@ -1,7 +1,10 @@
 import { useState, useCallback, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import {
+  useNavigate, useParams
+  
+ } from 'react-router-dom';
 import { GoogleMap, useJsApiLoader, Marker, Autocomplete } from '@react-google-maps/api';
-import { createBooking, getUserById, updateUser } from '../api';
+import { getUserById, updateUser } from '../api';
 
 const libraries: ('places')[] = ['places'];
 
@@ -21,6 +24,7 @@ type Booking = {
 };
 
 const SearchSpotPage = () => {
+  const { car_id } = useParams()
   const navigate = useNavigate();
   const [booking, setBooking] = useState<Booking>({
     address: '',
@@ -39,8 +43,8 @@ const SearchSpotPage = () => {
 
   const [search, setSearch] = useState('');
   const [distance, setDistance] = useState('500m');
-  const [date, setDate] = useState('');
-  const [type, setType] = useState('private');
+  const [date, setDate] = useState(new Date().toISOString().slice(0, 16));
+  const [type, setType] = useState('public');
   const [favorite, setFavorite] = useState('');
   const [mapCenter, setMapCenter] = useState<google.maps.LatLngLiteral>({ lat: 41.3874, lng: 2.1686 });
   const [markerPos, setMarkerPos] = useState<google.maps.LatLngLiteral | null>(null);
@@ -77,23 +81,22 @@ const SearchSpotPage = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const payload: Booking = {
+    const paramUrl: Booking = {
       ...booking,
       address: search,
-      available_from: date,
+      available_from: new Date(date).toISOString(),
       details: {
         ...booking.details,
         zone_type: type,
       },
       internal_notes: `distance:${distance}`,
     };
-    await createBooking(payload);
+    //await createBooking(payload);
 
     if (favorite.trim()) {
       const userId = localStorage.getItem('user_id');
       if (userId) {
-        const userResponse = await getUserById(userId);
-        const user = userResponse.data;
+        const user = await getUserById(userId);
         const currentFavorites = user.details?.favorites ?? [];
         const newFavorite = {
           title: favorite,
@@ -110,13 +113,20 @@ const SearchSpotPage = () => {
       }
     }
 
-    navigate('/cars');
+    
+    const params = new URLSearchParams();
+    params.set('address', paramUrl.address);
+    params.set('latitude', paramUrl.latitude);
+    params.set('longitude', paramUrl.longitude);
+    params.set('available_from', paramUrl.available_from);
+    params.set('car_id', car_id ?? '');
+    navigate(`/waiting?${params.toString()}`);
   };
 
   return (
     <div className="p-4 w-[375px] h-[667px] bg-[#EEE] rounded-[30px] border-2 border-[#222] shadow-[0_0_40px_rgba(255,255,255,0.1)] overflow-hidden relative">
       <div className="h-full overflow-y-auto">
-        <h2 className='pb-4'>Seach Spot</h2>
+        <h2 className='pb-4'>Search Spot</h2>
 
         <form onSubmit={handleSubmit} className='flex flex-col gap-2'>
           <div className='flex flex-col'>
@@ -179,8 +189,8 @@ const SearchSpotPage = () => {
                   value={type}
                   onChange={(e) => setType(e.target.value)}
                 >
-                  <option value="private">Private</option>
                   <option value="public">Public</option>
+                  <option value="private">Private</option>
                 </select>
               </div>
               <div>
@@ -196,8 +206,10 @@ const SearchSpotPage = () => {
               <div>
                 <label htmlFor="date">Save like favorite</label>
                 <input
-                  type="type"
+                  type="text"
                   name="favorite"
+                  value={favorite}
+                  onChange={(e) => setFavorite(e.target.value)}
                 />
               </div>
           </div>
@@ -205,7 +217,7 @@ const SearchSpotPage = () => {
           </div>
           <div className='flex justify-between items-center'>
             <button type="submit">
-              Create Spot
+              Search spot
             </button>
           </div>
           <div className='flex justify-start pt-3'>

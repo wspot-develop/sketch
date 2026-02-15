@@ -21,7 +21,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/search-spot" element={<SearchSpotPage />} />
+        <Route path="/search-spot/:car_id" element={<SearchSpotPage />} />
         <Route path="/parked-waiting/:car_id" element={<ParkedWaitingPage />} />
         <Route path="/parking-waiting-match/:car_id" element={<ParkingWaitingMatchPage />} />
         <Route path="/parking-create-spot/:car_id" element={<ParkingCreateSpotPage />} />
@@ -29,6 +29,7 @@ function App() {
         <Route path="/parking-match/:car_id" element={<ParkingMatchPage />} />
         <Route path="/parking-options/:car_id" element={<ParkingOptionsPage />} />
         <Route path="/waiting-place/:car_id" element={<WaitingPlacePage />} />
+        <Route path="/waiting" element={<WaitingPlacePage />} />
         <Route path="/car-start-parking/:car_id" element={<CarStartParkingPage />} />
         <Route path="/parking-spots/:car_id" element={<ParkingSpotsPage />} />
         <Route path="/login" element={<LoginPage />} />

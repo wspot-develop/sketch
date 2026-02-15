@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { getUserById } from '../api';
 
 interface Favorite {
@@ -10,7 +10,7 @@ interface Favorite {
 }
 
 const CarStartParkingPage = () => {
-  
+  const navigate = useNavigate();  
   const { car_id } = useParams();
   const [favorites, setFavorites] = useState<Favorite[]>([]);
 
@@ -21,6 +21,18 @@ const CarStartParkingPage = () => {
       setFavorites(res.details.favorites ?? []);
     });
   }, []);
+
+  const onSearchByFavorite = (favorite: Favorite) => {
+    const params = new URLSearchParams({
+      title: favorite.title,
+      address: favorite.address,
+      latitude: favorite.latitude,
+      longitude: favorite.longitude,
+      car_id: car_id ?? '',
+      available_from: new Date().toISOString()
+    });
+    navigate(`/waiting?${params.toString()}`);
+  }
 
   return (
     <div className="p-4 w-[375px] h-[667px] bg-[#EEE] rounded-[30px] border-2 border-[#222] shadow-[0_0_40px_rgba(255,255,255,0.1)] overflow-hidden relative">
@@ -33,14 +45,14 @@ const CarStartParkingPage = () => {
         <div className='flex flex-col gap-6'>
 
           {favorites.map((favorite, idx) => (
-            <button key={idx} onClick={() => window.location.href = `/parking-spots/${car_id}?place=${favorite.address}`} className='border-2 rounded-lg shadow-2xl no-underline'>
+            <button key={idx} onClick={() => {onSearchByFavorite(favorite)}} className='border-2 rounded-lg shadow-2xl no-underline'>
               <div className="flex flex-col justify-center items-center p-2 ">
                 <p>{favorite.title}</p>
               </div>
             </button>
           ))}
 
-          <button onClick={() => window.location.href = `/search-spot`} className=' border-2 rounded-lg shadow-2xl no-underline'>
+          <button onClick={() => window.location.href = `/search-spot/${car_id}`} className=' border-2 rounded-lg shadow-2xl no-underline'>
             <div className="flex flex-col p-2 justify-center items-center ">
               <p>Search</p>
             </div>
