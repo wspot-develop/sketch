@@ -36,6 +36,19 @@ export const getUserById = async (id: string) => {
   return response.json();
 }
 
+export const updateUser = async (id: string, data: unknown) => {
+  const token = localStorage.getItem('token');
+  const response = await fetch(`${API_URL}/users/${id}`, {
+    method: 'PUT',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  });
+  return response.json();
+}
+
 export const getCars = async () => {
   const user_id = localStorage.getItem('user_id');
   const token = localStorage.getItem('token');

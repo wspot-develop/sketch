@@ -1,0 +1,22 @@
+[
+  { "address": "La Rambla, Barcelona", "latitude": "41.380775", "longitude": "2.173661" },
+  { "address": "Carrer d'Alcolea, Barcelona", "latitude": "41.377625", "longitude": "2.136000" },
+  { "address": "Avinguda Diagonal, Barcelona", "latitude": "41.395473", "longitude": "2.155563" },
+  { "address": "Carrer de Tarragona, Barcelona", "latitude": "41.374150", "longitude": "2.158780" },
+  { "address": "Gran Via de les Corts Catalanes, Barcelona", "latitude": "41.385064", "longitude": "2.162605" },
+  { "address": "Carrer del Consell de Cent, Barcelona", "latitude": "41.383350", "longitude": "2.166005" },
+  { "address": "Carrer del Carme, Barcelona", "latitude": "41.380340", "longitude": "2.166620" },
+  { "address": "Carrer de Ferran, Barcelona", "latitude": "41.383100", "longitude": "2.173450" },
+  { "address": "Carrer de Pi i Margall, Barcelona", "latitude": "41.411500", "longitude": "2.157900" },
+  { "address": "Avinguda de Roma, Barcelona", "latitude": "41.370800", "longitude": "2.150700" },
+  { "address": "Rambla del Raval, Barcelona", "latitude": "41.380900", "longitude": "2.165000" },
+  { "address": "Carrer de Muntaner, Barcelona", "latitude": "41.394200", "longitude": "2.151400" },
+  { "address": "Passeig de Gràcia, Barcelona", "latitude": "41.392790", "longitude": "2.162250" },
+  { "address": "Carrer d’Aragó, Barcelona", "latitude": "41.385300", "longitude": "2.175400" },
+  { "address": "Carrer de Balmes, Barcelona", "latitude": "41.398700", "longitude": "2.152600" },
+  { "address": "Carrer de Sants, Barcelona", "latitude": "41.374800", "longitude": "2.141900" },
+  { "address": "Carrer de la Marina, Barcelona", "latitude": "41.400000", "longitude": "2.198000" },
+  { "address": "Carrer de Llúria, Barcelona", "latitude": "41.391800", "longitude": "2.166000" },
+  { "address": "Carrer de Provença, Barcelona", "latitude": "41.395000", "longitude": "2.165800" },
+  { "address": "Carrer de Roger de Llúria, Barcelona", "latitude": "41.392900", "longitude": "2.166800" }
+]

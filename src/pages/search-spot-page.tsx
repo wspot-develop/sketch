@@ -1,7 +1,7 @@
 import { useState, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { GoogleMap, useJsApiLoader, Marker, Autocomplete } from '@react-google-maps/api';
-import { createBooking } from '../api';
+import { createBooking, getUserById, updateUser } from '../api';
 
 const libraries: ('places')[] = ['places'];
 
@@ -41,7 +41,8 @@ const SearchSpotPage = () => {
   const [distance, setDistance] = useState('500m');
   const [date, setDate] = useState('');
   const [type, setType] = useState('private');
-  const [mapCenter, setMapCenter] = useState<google.maps.LatLngLiteral>({ lat: 40.4168, lng: -3.7038 });
+  const [favorite, setFavorite] = useState('');
+  const [mapCenter, setMapCenter] = useState<google.maps.LatLngLiteral>({ lat: 41.3874, lng: 2.1686 });
   const [markerPos, setMarkerPos] = useState<google.maps.LatLngLiteral | null>(null);
 
   const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
@@ -87,6 +88,28 @@ const SearchSpotPage = () => {
       internal_notes: `distance:${distance}`,
     };
     await createBooking(payload);
+
+    if (favorite.trim()) {
+      const userId = localStorage.getItem('user_id');
+      if (userId) {
+        const userResponse = await getUserById(userId);
+        const user = userResponse.data;
+        const currentFavorites = user.details?.favorites ?? [];
+        const newFavorite = {
+          title: favorite,
+          address: booking.address,
+          latitude: booking.latitude,
+          longitude: booking.longitude,
+        };
+        await updateUser(userId, {
+          details: {
+            ...user.details,
+            favorites: [...currentFavorites, newFavorite],
+          },
+        });
+      }
+    }
+
     navigate('/cars');
   };
 
