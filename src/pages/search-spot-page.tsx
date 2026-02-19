@@ -24,7 +24,7 @@ type Booking = {
 };
 
 const SearchSpotPage = () => {
-  const { car_id } = useParams()
+  const { vehicle_id } = useParams()
   const navigate = useNavigate();
   const [booking, setBooking] = useState<Booking>({
     address: '',
@@ -119,7 +119,7 @@ const SearchSpotPage = () => {
     params.set('latitude', paramUrl.latitude);
     params.set('longitude', paramUrl.longitude);
     params.set('available_from', paramUrl.available_from);
-    params.set('car_id', car_id ?? '');
+    params.set('vehicle_id', vehicle_id ?? '');
     navigate(`/waiting?${params.toString()}`);
   };
 

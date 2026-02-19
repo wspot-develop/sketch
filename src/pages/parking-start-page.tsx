@@ -11,13 +11,12 @@ interface Favorite {
 
 const CarStartParkingPage = () => {
   const navigate = useNavigate();  
-  const { car_id } = useParams();
+  const { vehicle_id, user_id } = useParams();
   const [favorites, setFavorites] = useState<Favorite[]>([]);
 
   useEffect(() => {
-    const userId = localStorage.getItem('user_id');
-    if (!userId) return;
-    getUserById(userId).then((res) => {
+    if (!user_id) return;
+    getUserById(user_id).then((res) => {
       setFavorites(res.details.favorites ?? []);
     });
   }, []);
@@ -28,7 +27,8 @@ const CarStartParkingPage = () => {
       address: favorite.address,
       latitude: favorite.latitude,
       longitude: favorite.longitude,
-      car_id: car_id ?? '',
+      user_id: user_id ?? '',
+      vehicle_id: vehicle_id ?? '',
       available_from: new Date().toISOString()
     });
     navigate(`/waiting?${params.toString()}`);
@@ -52,7 +52,7 @@ const CarStartParkingPage = () => {
             </button>
           ))}
 
-          <button onClick={() => window.location.href = `/search-spot/${car_id}`} className=' border-2 rounded-lg shadow-2xl no-underline'>
+          <button onClick={() => window.location.href = `/search-spot/${vehicle_id}`} className=' border-2 rounded-lg shadow-2xl no-underline'>
             <div className="flex flex-col p-2 justify-center items-center ">
               <p>Search</p>
             </div>

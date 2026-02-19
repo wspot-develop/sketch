@@ -4,22 +4,22 @@ import { createBooking } from '../api';
 
 const ParkingCreateSpotPage = () => {
   const navigate = useNavigate();
-  const { car_id } = useParams();
+  const { vehicle_id } = useParams();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const bookingData = {
-      car_id,
+      vehicle_id,
       address: formData.get('address'),
       available_from: new Date(formData.get('available_from') as string).toISOString(),
       details: {
-        vehicle_id: car_id,
+        vehicle_id: vehicle_id,
         zone_type: formData.get('details[zone_type]'),
       },
     };
     await createBooking(bookingData);
-    navigate(`/cars/${car_id}`);
+    navigate(`/cars/${vehicle_id}`);
   };
 
   return (

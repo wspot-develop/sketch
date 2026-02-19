@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { WsProvider } from './ws-provider';
 import LoginPage from './pages/login-page';
 import RegisterPage from './pages/register-page';
 import CarPage from './pages/car-page';
@@ -19,28 +20,30 @@ import SearchSpotPage from './pages/search-spot-page';
 
 function App() {
   return (
+    <WsProvider>
     <Router>
       <Routes>
-        <Route path="/search-spot/:car_id" element={<SearchSpotPage />} />
-        <Route path="/parked-waiting/:car_id" element={<ParkedWaitingPage />} />
-        <Route path="/parking-waiting-match/:car_id" element={<ParkingWaitingMatchPage />} />
-        <Route path="/parking-create-spot/:car_id" element={<ParkingCreateSpotPage />} />
+        <Route path="/search-spot/:vehicle_id" element={<SearchSpotPage />} />
+        <Route path="/parked-waiting/:vehicle_id" element={<ParkedWaitingPage />} />
+        <Route path="/parking-waiting-match/:vehicle_id" element={<ParkingWaitingMatchPage />} />
+        <Route path="/parking-create-spot/:vehicle_id" element={<ParkingCreateSpotPage />} />
         <Route path="/parking-success" element={<ParkingSuccessPage />} />
-        <Route path="/parking-match/:car_id" element={<ParkingMatchPage />} />
-        <Route path="/parking-options/:car_id" element={<ParkingOptionsPage />} />
-        <Route path="/waiting-place/:car_id" element={<WaitingPlacePage />} />
+        <Route path="/parking-match/:vehicle_id" element={<ParkingMatchPage />} />
+        <Route path="/parking-options/:user_id/:vehicle_id" element={<ParkingOptionsPage />} />
+        <Route path="/waiting-place/:vehicle_id" element={<WaitingPlacePage />} />
         <Route path="/waiting" element={<WaitingPlacePage />} />
-        <Route path="/car-start-parking/:car_id" element={<CarStartParkingPage />} />
-        <Route path="/parking-spots/:car_id" element={<ParkingSpotsPage />} />
+        <Route path="/car-start-parking/:user_id/:vehicle_id" element={<CarStartParkingPage />} />
+        <Route path="/parking-spots/:vehicle_id" element={<ParkingSpotsPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/cars" element={<CarPage />} />
-        <Route path="/cars/:car_id" element={<CarNotificationPage />} />
+        <Route path="/cars/:vehicle_id" element={<CarNotificationPage />} />
         <Route path="/car-create" element={<CarCreatePage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/page" element={<Page />} />
         <Route path="/" element={<Navigate to="/login" replace />} />
       </Routes>
     </Router>
+    </WsProvider>
   );
 }
 

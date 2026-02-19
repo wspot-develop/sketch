@@ -3,7 +3,7 @@ import { Car, CircleParking } from 'lucide-react';
 
 
 const ParkingOptionsPage = () => {
-  const { car_id } = useParams();
+  const { vehicle_id, user_id } = useParams();
   const navigate = useNavigate();
 
   return (
@@ -15,13 +15,13 @@ const ParkingOptionsPage = () => {
         </div>
 
         <div className='flex flex-col gap-6'>
-          <button onClick={() => navigate(`/car-start-parking/${car_id}`)} className='border-2 rounded-lg shadow-2xl no-underline'>
+          <button onClick={() => navigate(`/car-start-parking/${user_id}/${vehicle_id}`)} className='border-2 rounded-lg shadow-2xl no-underline'>
             <div className="flex flex-col justify-center items-center p-2 ">
               <Car size={120} />
               <p>Find Spot</p>
             </div>
           </button>
-          <button onClick={() => navigate(`/parking-create-spot/${car_id}`)} className='border-2 rounded-lg shadow-2xl no-underline'>
+          <button onClick={() => navigate(`/parking-create-spot/${vehicle_id}`)} className='border-2 rounded-lg shadow-2xl no-underline'>
             <div className="flex flex-col justify-center items-center p-2 ">
               <CircleParking size={120} />
               <p>Create Spot</p>

@@ -5,6 +5,8 @@ const CarPage: React.FC = () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [cars, setCars] = useState<any[]>([]);
 
+  const user_id = localStorage.getItem('user_id');
+
   useEffect(() => {
     getCars().then(data => {
       setCars(data);
@@ -25,7 +27,7 @@ const CarPage: React.FC = () => {
             </div>
             <ul className='pl-6 pt-2'>
               {cars.map((car, index) => (
-                <li className='pl-4 pb-2' key={index}><a href={`/parking-options/${car.id}`}>{car.name}</a></li>
+                <li className='pl-4 pb-2' key={index}><a href={`/parking-options/${user_id}/${car.id}`}>{car.name}</a></li>
               ))}
             </ul>
           </div>

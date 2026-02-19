@@ -75,10 +75,10 @@ export const createCar = async (carData: unknown) => {
   return response.json();
 }
 
-export const getCar = async (car_id: string) => {
+export const getCar = async (vehicle_id: string) => {
   const user_id = localStorage.getItem('user_id');
   const token = localStorage.getItem('token');
-  const response = await fetch(`${API_URL}/users/${user_id}/cars/${car_id}`, {
+  const response = await fetch(`${API_URL}/users/${user_id}/cars/${vehicle_id}`, {
     method: 'GET',
     headers: {
       'Authorization': `Bearer ${token}`,
@@ -111,3 +111,17 @@ export const getBookings = async () => {
   });
   return response.json();
 }
+
+export const findAvailableSpots = async (lat: string, lng: string, distance: number) => {
+  const token = localStorage.getItem('token');
+  const response = await fetch(`${API_URL}/search-bookings-by-lat-lng?latitude=${lat}&longitude=${lng}&distance=${distance}`, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    }
+  });
+  const dataJson = await response.json();
+  return dataJson.bookings;
+}
+
