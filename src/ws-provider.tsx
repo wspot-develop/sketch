@@ -46,7 +46,17 @@ export function WsProvider({ children }: { children: ReactNode }) {
         window.location.href = `/page?content=parking-cancelled`
       }
       if (msg?.data?.action === 'accepted-match') {
-        window.location.href = `/parking-match/${msg?.data?.match_user_id}`
+        const params = new URLSearchParams({
+          title: msg?.data?.title,
+          address: msg?.data?.address,
+          offer_latitude: msg?.data?.latitude,
+          offer_longitude: msg?.data?.longitude,
+          offer_user_id: msg?.data?.offer_user_id,
+          offer_vehicle_id: msg?.data?.offer_vehicle_id,             
+          user_id: msg?.data?.match_user_id,
+          vehicle_id: msg?.data?.match_vehicle_id
+        });
+        window.location.href = `/parking-match/${msg?.data?.match_user_id}?${params.toString()}`
       }
       handlersRef.current.forEach((h) => h(msg));
     });
