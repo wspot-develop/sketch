@@ -16,6 +16,7 @@ import ParkingWaitingMatchPage from './pages/parking-waiting-match';
 import Page from './pages/page';
 import ParkedWaitingPage from './pages/parked-waiting';
 import SearchSpotPage from './pages/search-spot-page';
+import Simulator from './pages/simulator';
 
 
 function App() {
@@ -41,6 +42,7 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/page" element={<Page />} />
         <Route path="/" element={<Navigate to="/login" replace />} />
+        <Route path="/simulator" element={<Simulator />} />
       </Routes>
     </Router>
     </WsProvider>

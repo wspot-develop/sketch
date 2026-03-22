@@ -5,7 +5,6 @@ import { useWs } from '../ws-provider';
 
 type LatLng = { lat: number; lng: number };
 
-// Barcelona area: origin (Sagrada Familia) -> destination (Placa Catalunya)
 const ORIGIN: LatLng = { lat: 41.4036, lng: 2.1744 };
 const DESTINATION: LatLng = { lat: 41.3874, lng: 2.1686 };
 
