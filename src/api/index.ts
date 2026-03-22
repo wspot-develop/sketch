@@ -109,7 +109,8 @@ export const getBookings = async () => {
       'Content-Type': 'application/json',
     }
   });
-  return response.json();
+  const r = await response.json();
+  return r.data
 }
 
 export const findAvailableSpots = async (lat: string, lng: string, distance: number) => {
