@@ -9,7 +9,7 @@ export const login = async (login: string, pws_app: string) => {
     body: JSON.stringify({ login, pws_app }),
   });
   const responseJson = await response.json();
-  localStorage.setItem('token', responseJson.data.token);
+  localStorage.setItem('token', responseJson.data.accessToken);
   localStorage.setItem('user_id', responseJson.data.user.id);
   return responseJson.data;
 }
