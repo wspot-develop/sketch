@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
 import { useWs } from '../ws-provider';
 import { getBookings } from '../api';
 
@@ -9,6 +10,8 @@ interface Booking {
   longitude: string;
 }
 
+const mapContainerStyle = { width: '100%', height: '400px' };
+
 const SimulatorPage: React.FC = () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [message, setMessage] = useState<Record<string, any>>({})
@@ -16,6 +19,20 @@ const SimulatorPage: React.FC = () => {
   const [bookings, setBookings] = useState<Booking[]>([])
   const [logs, setLogs] = useState<string[]>([])
   const { send, subscribe } = useWs();
+
+  const { isLoaded } = useJsApiLoader({
+    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY ?? '',
+  });
+
+  const center = useMemo(() => {
+    if (bookings.length === 0) return { lat: -33.45, lng: -70.65 };
+    const lats = bookings.map(b => parseFloat(b.latitude));
+    const lngs = bookings.map(b => parseFloat(b.longitude));
+    return {
+      lat: lats.reduce((a, b) => a + b, 0) / lats.length,
+      lng: lngs.reduce((a, b) => a + b, 0) / lngs.length,
+    };
+  }, [bookings]);
 
   useEffect(() => {
     const log = (msg: string, ...args: unknown[]) => {
@@ -100,6 +117,22 @@ const SimulatorPage: React.FC = () => {
           ))}
         </select>
       </div>
+
+      <h3>Mapa</h3>
+      {isLoaded ? (
+        <GoogleMap mapContainerStyle={mapContainerStyle} center={center} zoom={14}>
+          {bookings.map((booking) => (
+            <Marker
+              key={booking.id}
+              position={{ lat: parseFloat(booking.latitude), lng: parseFloat(booking.longitude) }}
+              title={`${booking.available_from}`}
+              onClick={() => setBookingId(booking.id)}
+            />
+          ))}
+        </GoogleMap>
+      ) : (
+        <p>Cargando mapa…</p>
+      )}
 
       <h3>Logs</h3>
       <textarea
