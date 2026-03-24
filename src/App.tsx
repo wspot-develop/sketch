@@ -17,6 +17,8 @@ import Page from './pages/page';
 import ParkedWaitingPage from './pages/parked-waiting';
 import SearchSpotPage from './pages/search-spot-page';
 import Simulator from './pages/simulator';
+import LoginDesktop from './pages/login';
+
 
 
 function App() {
@@ -35,14 +37,15 @@ function App() {
         <Route path="/waiting" element={<WaitingPlacePage />} />
         <Route path="/car-start-parking/:user_id/:vehicle_id" element={<CarStartParkingPage />} />
         <Route path="/parking-spots/:vehicle_id" element={<ParkingSpotsPage />} />
-        <Route path="/login" element={<LoginPage />} />
+        <Route path="/login-mobile" element={<LoginPage />} />
+        <Route path="/login" element={<LoginDesktop />} />
         <Route path="/cars" element={<CarPage />} />
         <Route path="/cars/:vehicle_id" element={<CarNotificationPage />} />
         <Route path="/car-create" element={<CarCreatePage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/page" element={<Page />} />
         <Route path="/" element={<Navigate to="/login" replace />} />
-        <Route path="/simulator" element={<Simulator />} />
+        <Route path="/simulator/:booking_id" element={<Simulator />} />
       </Routes>
     </Router>
     </WsProvider>

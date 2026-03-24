@@ -1,38 +1,21 @@
-import { useEffect, useMemo, useState } from 'react';
-import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
+import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useWs } from '../ws-provider';
-import { getBookings } from '../api';
-
-interface Booking {
-  id: string;
-  available_from: string;
-  latitude: string;
-  longitude: string;
-}
-
-const mapContainerStyle = { width: '100%', height: '400px' };
 
 const SimulatorPage: React.FC = () => {
+  const [searchParams] = useSearchParams();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [message, setMessage] = useState<Record<string, any>>({})
-  const [bookingId, setBookingId] = useState('')
-  const [bookings, setBookings] = useState<Booking[]>([])
+  const [bookingId, setBookingId] = useState(searchParams.get('booking_id') ?? '')
   const [logs, setLogs] = useState<string[]>([])
   const { send, subscribe } = useWs();
 
-  const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY ?? '',
-  });
-
-  const center = useMemo(() => {
-    if (bookings.length === 0) return { lat: -33.45, lng: -70.65 };
-    const lats = bookings.map(b => parseFloat(b.latitude));
-    const lngs = bookings.map(b => parseFloat(b.longitude));
-    return {
-      lat: lats.reduce((a, b) => a + b, 0) / lats.length,
-      lng: lngs.reduce((a, b) => a + b, 0) / lngs.length,
-    };
-  }, [bookings]);
+  useEffect(() => {
+    const fromUrl = searchParams.get('booking_id');
+    if (fromUrl) {
+      send({ type: 'subscribe', channel: fromUrl });
+    }
+  }, [searchParams, send]);
 
   useEffect(() => {
     const log = (msg: string, ...args: unknown[]) => {
@@ -59,12 +42,6 @@ const SimulatorPage: React.FC = () => {
       unsubscribe()
     }
   }, [bookingId, send, subscribe])
-
-  useEffect(() => {
-    getBookings().then((res) => {
-      setBookings(res.data ?? res.bookings ?? []);
-    });
-  }, []);
 
   const onSubscribeHandle = (bookingId: string) => {
     send({ type: 'subscribe', channel: bookingId })
@@ -100,59 +77,42 @@ const SimulatorPage: React.FC = () => {
   
 
   return (
-    <div className='bg-white p-6 scroll-auto w-full'>
+    <div className='bg-white p-6 text-sx scroll-auto w-full'>
 
-      <div className='pt-12'>
-        <div className='flex'>
+      <div>
+        <div className='flex items-center gap-2'>
           <button onClick={() => onSubscribeHandle(bookingId)}>Subscribe</button>
-          <input className='w-full' type="text" value={bookingId} onChange={(event) => setBookingId(event.target.value)}></input>
+          <div>
+            <input type="text" value={bookingId} onChange={(event) => setBookingId(event.target.value)}></input>
+          </div>
         </div>
 
-        <div className='flex gap-3 justify-between'>
+        <div className='flex flex-col gap-3 justify-between'>
           <div>
-            <div className='pt-6'>[accept-match]</div>
+            <div className='pt-3'>[accept-match]</div>
             <button onClick={() => onAcceptMatchHandle(bookingId)}>Aceptar: que venga aparcar</button>
           </div>
 
           <div>          
-            <div className='pt-6'>[accept-arrive]</div>
+            <div className='pt-3'>[accept-arrive]</div>
             <button onClick={() => onAcceptArriveHandle(bookingId)}>Aceptar: que ya lo veo</button>
           </div>
 
           <div>          
-            <div className='pt-6'>[cancel-match]</div>
+            <div className='pt-3'>[cancel-match]</div>
             <button onClick={() => onCancelMatchHandle(bookingId)}>Cancelar: que me canse de esperar</button>
           </div>
         </div>
       </div>
 
-      <div className='pt-6 gap-3 flex w-full justify-between'>
-        <div className='flex-1'>
-          <h3>Mapa</h3>
-          {isLoaded ? (
-            <GoogleMap mapContainerStyle={mapContainerStyle} center={center} zoom={14}>
-              {bookings.map((booking) => (
-                <Marker
-                  key={booking.id}
-                  position={{ lat: parseFloat(booking.latitude), lng: parseFloat(booking.longitude) }}
-                  title={`${booking.available_from}`}
-                  onClick={() => setBookingId(booking.id)}
-                />
-              ))}
-            </GoogleMap>
-          ) : (
-            <p>Cargando mapa…</p>
-          )}
-        </div>
-        <div className='flex-1'>
-          <h3>Logs</h3>
-          <textarea
-            className='w-full font-mono text-sm'
-            rows={15}
-            readOnly
-            value={logs.join('\n')}
-          />
-        </div>
+      <div >
+        <h3>Logs</h3>
+        <textarea
+          className='w-full text-xs h-24 font-mono'
+          rows={15}
+          readOnly
+          value={logs.join('\n')}
+        />
       </div>
 
     </div>
