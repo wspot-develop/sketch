@@ -1,21 +1,22 @@
 import { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
 import { useWs } from '../ws-provider';
+import { useParams } from 'react-router-dom';
 
 const SimulatorPage: React.FC = () => {
-  const [searchParams] = useSearchParams();
+  const { booking_id } = useParams();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [message, setMessage] = useState<Record<string, any>>({})
-  const [bookingId, setBookingId] = useState(searchParams.get('booking_id') ?? '')
+  const [bookingId, setBookingId] = useState(booking_id ?? '')
   const [logs, setLogs] = useState<string[]>([])
   const { send, subscribe } = useWs();
 
   useEffect(() => {
-    const fromUrl = searchParams.get('booking_id');
+    const fromUrl = booking_id
+    console.log('fromUrl', fromUrl)
     if (fromUrl) {
       send({ type: 'subscribe', channel: fromUrl });
     }
-  }, [searchParams, send]);
+  }, [booking_id, send]);
 
   useEffect(() => {
     const log = (msg: string, ...args: unknown[]) => {
@@ -77,7 +78,7 @@ const SimulatorPage: React.FC = () => {
   
 
   return (
-    <div className='bg-white p-6 text-sx scroll-auto w-full'>
+    <div className='container text-sx scroll-auto w-full'>
 
       <div>
         <div className='flex items-center gap-2'>
