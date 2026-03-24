@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
 import { findAvailableSpots } from '../api';
 import { useWs } from '../ws-provider';
 
@@ -7,6 +8,8 @@ interface Spot {
   booking_id: string;
   address: string;
   available_from: string;
+  latitude: number;
+  longitude: number;
   [key: string]: unknown;
 }
 
@@ -31,6 +34,15 @@ const WaitingPlacePage = () => {
   const { send } = useWs();
   const [loading, setLoading] = useState(true);
   const [spots, setSpots] = useState<Spot[]>([]);
+
+  const { isLoaded } = useJsApiLoader({
+    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY ?? '',
+  });
+
+  const mapCenter = {
+    lat: latitude ? Number(latitude) : 0,
+    lng: longitude ? Number(longitude) : 0,
+  };
 
   useEffect(() => {
     findAvailableSpots(latitude, longitude, distance)
@@ -61,6 +73,25 @@ const WaitingPlacePage = () => {
       <div>
         <div className='pb-6'>
           <h2 className='pb-4 font-bold text-lg'>Spots disponibles</h2>
+
+          {isLoaded && (
+            <div className='mb-4 rounded-lg overflow-hidden'>
+              <GoogleMap
+                mapContainerStyle={{ width: '100%', height: 200 }}
+                center={mapCenter}
+                zoom={15}
+              >
+                {spots.map((spot, idx) => (
+                  <Marker
+                    key={idx}
+                    position={{ lat: Number(spot.latitude), lng: Number(spot.longitude) }}
+                    title={spot.address}
+                    onClick={() => askThisSpot(spot)}
+                  />
+                ))}
+              </GoogleMap>
+            </div>
+          )}
 
           {loading && <p>Buscando lugares cercanos...</p>}
 

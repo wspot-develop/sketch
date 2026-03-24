@@ -47,11 +47,11 @@ const SimulatorPage: React.FC = () => {
       log('WebSocket received:', response)
 
       if (response?.data?.action === 'arrived-spot') {
-        log('Llego el coche')
+        log('[arrived-spot]: Llego el coche')
       }
 
       if (response?.data?.action === 'waiting-accept-match') {
-        log('Esperando ser aceptado')
+        log('[waiting-accept-match]: Esperando ser aceptado')
       }
     })
 
@@ -100,47 +100,61 @@ const SimulatorPage: React.FC = () => {
   
 
   return (
-    <div>
-      <div>
-        <input className='w-full' type="text" value={bookingId} onChange={(event) => setBookingId(event.target.value)}></input>
-        <button onClick={() => onSubscribeHandle(bookingId)}>Subscribe</button>
-        <button onClick={() => onAcceptMatchHandle(bookingId)}>Aceptar: que venga aparcar</button>
-        <button onClick={() => onAcceptArriveHandle(bookingId)}>Aceptar: que ya lo veo</button>
-        <button onClick={() => onCancelMatchHandle(bookingId)}>Cancelar: que me canse de esperar</button>
+    <div className='bg-white p-6 scroll-auto w-full'>
+
+      <div className='pt-12'>
+        <div className='flex'>
+          <button onClick={() => onSubscribeHandle(bookingId)}>Subscribe</button>
+          <input className='w-full' type="text" value={bookingId} onChange={(event) => setBookingId(event.target.value)}></input>
+        </div>
+
+        <div className='flex gap-3 justify-between'>
+          <div>
+            <div className='pt-6'>[accept-match]</div>
+            <button onClick={() => onAcceptMatchHandle(bookingId)}>Aceptar: que venga aparcar</button>
+          </div>
+
+          <div>          
+            <div className='pt-6'>[accept-arrive]</div>
+            <button onClick={() => onAcceptArriveHandle(bookingId)}>Aceptar: que ya lo veo</button>
+          </div>
+
+          <div>          
+            <div className='pt-6'>[cancel-match]</div>
+            <button onClick={() => onCancelMatchHandle(bookingId)}>Cancelar: que me canse de esperar</button>
+          </div>
+        </div>
       </div>
 
-      <h3>Bookings</h3>
-      <div>
-        <select onChange={(event) => setBookingId(event.target.value)}>
-          {bookings.map((booking) => (
-            <option key={booking.id} value={booking.id}>{booking.latitude}, {booking.longitude} — {booking.available_from}</option>
-          ))}
-        </select>
+      <div className='pt-6 gap-3 flex w-full justify-between'>
+        <div className='flex-1'>
+          <h3>Mapa</h3>
+          {isLoaded ? (
+            <GoogleMap mapContainerStyle={mapContainerStyle} center={center} zoom={14}>
+              {bookings.map((booking) => (
+                <Marker
+                  key={booking.id}
+                  position={{ lat: parseFloat(booking.latitude), lng: parseFloat(booking.longitude) }}
+                  title={`${booking.available_from}`}
+                  onClick={() => setBookingId(booking.id)}
+                />
+              ))}
+            </GoogleMap>
+          ) : (
+            <p>Cargando mapa…</p>
+          )}
+        </div>
+        <div className='flex-1'>
+          <h3>Logs</h3>
+          <textarea
+            className='w-full font-mono text-sm'
+            rows={15}
+            readOnly
+            value={logs.join('\n')}
+          />
+        </div>
       </div>
 
-      <h3>Mapa</h3>
-      {isLoaded ? (
-        <GoogleMap mapContainerStyle={mapContainerStyle} center={center} zoom={14}>
-          {bookings.map((booking) => (
-            <Marker
-              key={booking.id}
-              position={{ lat: parseFloat(booking.latitude), lng: parseFloat(booking.longitude) }}
-              title={`${booking.available_from}`}
-              onClick={() => setBookingId(booking.id)}
-            />
-          ))}
-        </GoogleMap>
-      ) : (
-        <p>Cargando mapa…</p>
-      )}
-
-      <h3>Logs</h3>
-      <textarea
-        className='w-full font-mono text-sm'
-        rows={15}
-        readOnly
-        value={logs.join('\n')}
-      />
     </div>
   );
 };
