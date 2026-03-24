@@ -30,6 +30,10 @@ const SimulatorPage: React.FC = () => {
       setMessage(response)
       log('WebSocket received:', response)
 
+      if (response?.data?.action === 'delay') {
+        log('[delay]: Llego mas tarde')
+      }
+
       if (response?.data?.action === 'arrived-spot') {
         log('[arrived-spot]: Llego el coche')
       }
@@ -57,25 +61,54 @@ const SimulatorPage: React.FC = () => {
     })    
   }
   const onAcceptMatchHandle = (bookingId: string) => {
-        send({
-          type: 'send', channel: bookingId,
-          data: {
-            action: 'accepted-match',
-            match_user_id: message?.data?.user_id,
-            match_vehicle_id: message?.data?.vehicle_id,
-          }
-        })    
+    send({
+      type: 'send', channel: bookingId,
+      data: {
+        action: 'accepted-match',
+        match_user_id: message?.data?.user_id,
+        match_vehicle_id: message?.data?.vehicle_id,
+      }
+    })    
   }
 
   const onCancelMatchHandle = (bookingId: string) => {
-        send({
-          type: 'send', channel: bookingId,
-          data: {
-            action: 'canceled-match'
-          }
-        })    
+    send({
+      type: 'send', channel: bookingId,
+      data: {
+        action: 'canceled-match'
+      }
+    })    
+  }
+
+  const onAcceptDelayHandle = (bookingId: string) => {
+    send({
+      type: 'send', channel: bookingId,
+      data: {
+        action: 'accept-delay'
+      }
+    })    
   }
   
+  const onOkWaitingHandle = (bookingId: string) => {
+    send({
+      type: 'send', channel: bookingId,
+      data: {
+        action: 'ok-waiting'
+      }
+    })    
+  }  
+
+  /*
+    send({
+      type: 'send', channel: bookingId,
+      data: {
+        action: 'coming',
+        latitude,
+        longitude,
+        distance
+      }
+    })
+  */
 
   return (
     <div className='container text-sx scroll-auto w-full'>
@@ -90,19 +123,30 @@ const SimulatorPage: React.FC = () => {
 
         <div className='flex flex-col gap-3 justify-between'>
           <div>
-            <div className='pt-3'>[accept-match]</div>
+            <div className='py-3'>[waiting-accept-match] {"->"} [accept-match]</div>
             <button onClick={() => onAcceptMatchHandle(bookingId)}>Aceptar: que venga aparcar</button>
           </div>
 
           <div>          
-            <div className='pt-3'>[accept-arrive]</div>
-            <button onClick={() => onAcceptArriveHandle(bookingId)}>Aceptar: que ya lo veo</button>
+            <div className='py-3'>[cancel-match]</div>
+            <button onClick={() => onCancelMatchHandle(bookingId)}>Cancelar: que me canse de esperar</button>
           </div>
 
           <div>          
-            <div className='pt-3'>[cancel-match]</div>
-            <button onClick={() => onCancelMatchHandle(bookingId)}>Cancelar: que me canse de esperar</button>
+            <div className='py-3'>[delay] {"->"} [accept-delay]</div>
+            <button onClick={() => onAcceptDelayHandle(bookingId)}>Aceptar: Espero mas un poco</button>
           </div>
+
+          <div>          
+            <div className='py-3'>[are-close] {"->"} [ok-waiting]</div>
+            <button onClick={() => onOkWaitingHandle(bookingId)}>Aceptar: entiendo que estas cerca, y estoy esperando</button>
+          </div>          
+
+          <div>          
+            <div className='py-3'>[arrived-spot] {"->"} [accept-arrive]</div>
+            <button onClick={() => onAcceptArriveHandle(bookingId)}>Aceptar y recibo el dinero</button>
+          </div>
+
         </div>
       </div>
 
