@@ -6,6 +6,7 @@ const SimulatorPage: React.FC = () => {
   const { booking_id } = useParams();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [message, setMessage] = useState<Record<string, any>>({})
+  const [text, setText] = useState('')
   const [bookingId, setBookingId] = useState(booking_id ?? '')
   const [logs, setLogs] = useState<string[]>([])
   const { send, subscribe } = useWs();
@@ -30,12 +31,12 @@ const SimulatorPage: React.FC = () => {
       setMessage(response)
       log('WebSocket received:', response)
 
-      if (response?.data?.action === 'delay') {
-        log('[delay]: Llego mas tarde')
+      if (response?.data?.action === 'message') {
+        log('[message]: ', response?.data?.message)
       }
 
-      if (response?.data?.action === 'arrived-spot') {
-        log('[arrived-spot]: Llego el coche')
+      if (response?.data?.action === 'waiting-spot-confirmation') {
+        log('[waiting-spot-confirmation]: Esperando confimacion que aparco')
       }
 
       if (response?.data?.action === 'waiting-accept-match') {
@@ -52,11 +53,12 @@ const SimulatorPage: React.FC = () => {
     send({ type: 'subscribe', channel: bookingId })
   }
 
-  const onAcceptArriveHandle = (bookingId: string) => {
+  const onMessageHandle = (bookingId: string) => {
     send({
       type: 'send', channel: bookingId,
       data: {
-        action: 'accepted-arrive'
+        action: 'message',
+        message: text
       }
     })    
   }
@@ -80,17 +82,14 @@ const SimulatorPage: React.FC = () => {
     })    
   }
 
-  const onDelayHandle = (bookingId: string) => {
+  const onSpotConfirmationHandle = (bookingId: string) => {
     send({
       type: 'send', channel: bookingId,
       data: {
-        action: 'delay',
-        delayTime: 5
+        action: 'spot-confirmation'
       }
     })    
   }
-
-  
 
   return (
     <div className='container text-sx scroll-auto w-full'>
@@ -114,21 +113,26 @@ const SimulatorPage: React.FC = () => {
             <button onClick={() => onCancelMatchHandle(bookingId)}>Cancelar: que me canse de esperar</button>
           </div>
 
-
           <div>          
-            <div className='py-3'>[arrived-spot] {"->"} [accept-arrive]</div>
-            <button onClick={() => onAcceptArriveHandle(bookingId)}>Confirmar aparcamiento</button>
+            <div className='py-3'>[waiting-spot-confirmation] { " -> "} [spot-confirmation]</div>
+            <button onClick={() => onSpotConfirmationHandle(bookingId)}>Aceptar: Confirme que llego</button>
           </div>
 
-          <div>          
-            <div className='py-3'>[delay]</div>
-            <button onClick={() => onDelayHandle(bookingId)}>Espero 5 min</button>
+          <div className='py-1'>[message]</div>
+          <div className='flex gap-1'>          
+            <button onClick={() => onMessageHandle(bookingId)}>Mensage</button>
+            <div>
+              <input type="text" value={text} onChange={(event) => setText(event.target.value)}></input>
+            </div>
           </div>
+
           
           <div> 
             <h4> Mensages esperadas </h4>
-            <div className='py-3'>[delay] = Espera más 5 min </div>
-            <div className='py-3'>[are-close] = Ya esta cerca </div>
+            <div className='py-3'>[message] = Mensage de conversa </div>
+            <div className='py-3'>[waiting-spot-confirmation] = Nos encontramos y confirmo que va aparcar. </div>
+            <div className='py-3'>[waiting-accept-match] = Esperando acepation de aparcamiento. </div>
+
           </div>
           
         </div>
