@@ -80,6 +80,18 @@ const SimulatorPage: React.FC = () => {
     })    
   }
 
+  const onDelayHandle = (bookingId: string) => {
+    send({
+      type: 'send', channel: bookingId,
+      data: {
+        action: 'delay',
+        delayTime: 5
+      }
+    })    
+  }
+
+  
+
   return (
     <div className='container text-sx scroll-auto w-full'>
 
@@ -108,6 +120,11 @@ const SimulatorPage: React.FC = () => {
             <button onClick={() => onAcceptArriveHandle(bookingId)}>Confirmar aparcamiento</button>
           </div>
 
+          <div>          
+            <div className='py-3'>[delay]</div>
+            <button onClick={() => onDelayHandle(bookingId)}>Espero 5 min</button>
+          </div>
+          
           <div> 
             <h4> Mensages esperadas </h4>
             <div className='py-3'>[delay] = Espera más 5 min </div>
