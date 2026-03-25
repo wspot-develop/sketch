@@ -80,36 +80,6 @@ const SimulatorPage: React.FC = () => {
     })    
   }
 
-  const onAcceptDelayHandle = (bookingId: string) => {
-    send({
-      type: 'send', channel: bookingId,
-      data: {
-        action: 'accept-delay'
-      }
-    })    
-  }
-  
-  const onOkWaitingHandle = (bookingId: string) => {
-    send({
-      type: 'send', channel: bookingId,
-      data: {
-        action: 'ok-waiting'
-      }
-    })    
-  }  
-
-  /*
-    send({
-      type: 'send', channel: bookingId,
-      data: {
-        action: 'coming',
-        latitude,
-        longitude,
-        distance
-      }
-    })
-  */
-
   return (
     <div className='container text-sx scroll-auto w-full'>
 
@@ -132,28 +102,25 @@ const SimulatorPage: React.FC = () => {
             <button onClick={() => onCancelMatchHandle(bookingId)}>Cancelar: que me canse de esperar</button>
           </div>
 
-          <div>          
-            <div className='py-3'>[delay] {"->"} [accept-delay]</div>
-            <button onClick={() => onAcceptDelayHandle(bookingId)}>Aceptar: Espero mas un poco</button>
-          </div>
-
-          <div>          
-            <div className='py-3'>[are-close] {"->"} [ok-waiting]</div>
-            <button onClick={() => onOkWaitingHandle(bookingId)}>Aceptar: entiendo que estas cerca, y estoy esperando</button>
-          </div>          
 
           <div>          
             <div className='py-3'>[arrived-spot] {"->"} [accept-arrive]</div>
-            <button onClick={() => onAcceptArriveHandle(bookingId)}>Aceptar y recibo el dinero</button>
+            <button onClick={() => onAcceptArriveHandle(bookingId)}>Confirmar aparcamiento</button>
           </div>
 
+          <div> 
+            <h4> Mensages esperadas </h4>
+            <div className='py-3'>[delay] = Espera más 5 min </div>
+            <div className='py-3'>[are-close] = Ya esta cerca </div>
+          </div>
+          
         </div>
       </div>
 
       <div >
         <h3>Logs</h3>
         <textarea
-          className='w-full text-xs h-24 font-mono'
+          className='w-full text-xs h-36 font-mono'
           rows={15}
           readOnly
           value={logs.join('\n')}

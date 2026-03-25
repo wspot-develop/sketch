@@ -34,6 +34,7 @@ export function WsProvider({ children }: { children: ReactNode }) {
     socket.addEventListener('open', () => setConnected(true));
     socket.addEventListener('close', () => setConnected(false));
 
+      /*
     socket.addEventListener('message', (event) => {
       let msg: any;
       try {
@@ -60,6 +61,7 @@ export function WsProvider({ children }: { children: ReactNode }) {
       }
       handlersRef.current.forEach((h) => h(msg));
     });
+      */
 
     return () => {
       socket.close();
