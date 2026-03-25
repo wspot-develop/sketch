@@ -34,34 +34,16 @@ export function WsProvider({ children }: { children: ReactNode }) {
     socket.addEventListener('open', () => setConnected(true));
     socket.addEventListener('close', () => setConnected(false));
 
-      /*
     socket.addEventListener('message', (event) => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       let msg: any;
       try {
         msg = JSON.parse(event.data as string);
       } catch {
         msg = event.data;
       }
-      console.log('WebSocket message received:', msg);
-      if (msg?.data?.action === 'canceled-match') {
-        window.location.href = `/page?content=parking-cancelled`
-      }
-      if (msg?.data?.action === 'accepted-match') {
-        const params = new URLSearchParams({
-          title: msg?.data?.title,
-          address: msg?.data?.address,
-          offer_latitude: msg?.data?.latitude,
-          offer_longitude: msg?.data?.longitude,
-          offer_user_id: msg?.data?.offer_user_id,
-          offer_vehicle_id: msg?.data?.offer_vehicle_id,             
-          user_id: msg?.data?.match_user_id,
-          vehicle_id: msg?.data?.match_vehicle_id
-        });
-        window.location.href = `/parking-match/${msg?.data?.match_user_id}?${params.toString()}`
-      }
       handlersRef.current.forEach((h) => h(msg));
     });
-      */
 
     return () => {
       socket.close();

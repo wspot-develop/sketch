@@ -19,35 +19,31 @@ const SimulatorPage: React.FC = () => {
     }
   }, [booking_id, send]);
 
-  useEffect(() => {
-    const log = (msg: string, ...args: unknown[]) => {
-      const line = [msg, ...args.map(a => typeof a === 'string' ? a : JSON.stringify(a))].join(' ');
-      setLogs(prev => [...prev, `[${new Date().toLocaleTimeString()}] ${line}`]);
-    };
+  const log = (msg: string, ...args: unknown[]) => {
+    const line = [msg, ...args.map(a => typeof a === 'string' ? a : JSON.stringify(a))].join(' ');
+    setLogs(prev => [...prev, `[${new Date().toLocaleTimeString()}] ${line}`]);
+  };
+  
+  subscribe((raw: unknown) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const response = raw as Record<string, any>
+    console.log('response', response)
+    setMessage(response)
+    log('WebSocket received:', response)
 
-    const unsubscribe = subscribe((raw: unknown) => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const response = raw as Record<string, any>
-      setMessage(response)
-      log('WebSocket received:', response)
-
-      if (response?.data?.action === 'message') {
-        log('[message]: ', response?.data?.message)
-      }
-
-      if (response?.data?.action === 'waiting-spot-confirmation') {
-        log('[waiting-spot-confirmation]: Esperando confimacion que aparco')
-      }
-
-      if (response?.data?.action === 'waiting-accept-match') {
-        log('[waiting-accept-match]: Esperando ser aceptado')
-      }
-    })
-
-    return () => {
-      unsubscribe()
+    if (response?.data?.action === 'message') {
+      log('[message]: ', response?.data?.message)
     }
-  }, [bookingId, send, subscribe])
+
+    if (response?.data?.action === 'waiting-spot-confirmation') {
+      log('[waiting-spot-confirmation]: Esperando confimacion que aparco')
+    }
+
+    if (response?.data?.action === 'waiting-accept-match') {
+      log('[waiting-accept-match]: Esperando ser aceptado')
+    }
+  })
+
 
   const onSubscribeHandle = (bookingId: string) => {
     send({ type: 'subscribe', channel: bookingId })
@@ -144,7 +140,7 @@ const SimulatorPage: React.FC = () => {
           className='w-full text-xs h-36 font-mono'
           rows={15}
           readOnly
-          value={logs.join('\n')}
+          value={logs.join('\n\n')}
         />
       </div>
 
