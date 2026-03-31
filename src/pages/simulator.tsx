@@ -25,7 +25,7 @@ const SimulatorPage: React.FC = () => {
 
   const log = (msg: string, ...args: unknown[]) => {
     const line = [msg, ...args.map(a => typeof a === 'string' ? a : JSON.stringify(a))].join(' ');
-    setLogs(prev => [...prev, `[${new Date().toLocaleTimeString()}] ${line}`]);
+    setLogs(prev => [ `[${new Date().toLocaleTimeString()}] ${line}`, ...prev]);
   };
 
   subscribe((raw: unknown) => {
@@ -330,6 +330,30 @@ const SimulatorPage: React.FC = () => {
         </div>
       </div>
 
+      {/* Último mensaje recibido */}
+      <div className={sectionStyle}>
+        <div className={labelStyle}>Último mensaje recibido</div>
+        <pre className='text-xs font-mono p-2 rounded overflow-auto max-h-24'>
+          {JSON.stringify(lastMessage, null, 2)}
+        </pre>
+      </div>      
+
+
+      {/* Logs */}
+      <div className={sectionStyle}>
+        <div className='flex justify-between items-center'>
+          <div className={labelStyle}>Logs</div>
+          <button className='text-xs text-gray-400 hover:text-gray-600' onClick={() => setLogs([])}>Limpiar</button>
+        </div>
+        <textarea
+          className='w-full text-xs h-48 font-mono bg-gray-50 p-2 rounded'
+          rows={15}
+          readOnly
+          value={logs.join('\n\n')}
+        />
+      </div>     
+      
+
       {/* Referencia del protocolo */}
       <div className={sectionStyle}>
         <div className={labelStyle}>Fases del match</div>
@@ -350,27 +374,9 @@ const SimulatorPage: React.FC = () => {
         </ol>
       </div>
 
-      {/* Último mensaje recibido */}
-      <div className={sectionStyle}>
-        <div className={labelStyle}>Último mensaje recibido</div>
-        <pre className='text-xs font-mono bg-gray-50 p-2 rounded overflow-auto max-h-24'>
-          {JSON.stringify(lastMessage, null, 2)}
-        </pre>
-      </div>
 
-      {/* Logs */}
-      <div className={sectionStyle}>
-        <div className='flex justify-between items-center'>
-          <div className={labelStyle}>Logs</div>
-          <button className='text-xs text-gray-400 hover:text-gray-600' onClick={() => setLogs([])}>Limpiar</button>
-        </div>
-        <textarea
-          className='w-full text-xs h-48 font-mono bg-gray-50 p-2 rounded'
-          rows={15}
-          readOnly
-          value={logs.join('\n\n')}
-        />
-      </div>
+
+
     </div>
   );
 };
